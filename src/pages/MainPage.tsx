@@ -1,6 +1,7 @@
 import { Typography, Box, Button } from "@mui/material";
 import { useAppDispatch } from "../hooks/hooks";
 import { logout } from "../features/auth/authSlice";
+import NavBar from "../components/NavBar";
 
 const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -9,18 +10,21 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-      <Typography variant="h4">Welcome to the main Page!</Typography>
-      <Typography>Authenticated Content Here</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleLogout}
-        sx={{ mt: 2 }}
-      >
-        Logout
-      </Button>
-    </Box>
+    <>
+      <NavBar />
+      <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+        <Typography variant="h4">Welcome to the main Page!</Typography>
+        <Typography>Authenticated Content Here</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleLogout}
+          sx={{ mt: 2 }}
+        >
+          Logout
+        </Button>
+      </Box>
+    </>
   );
 };
 
