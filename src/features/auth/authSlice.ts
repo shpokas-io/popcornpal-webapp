@@ -8,7 +8,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: null,
+  token: localStorage.getItem("token"),
   loading: false,
   error: null,
 };
@@ -22,6 +22,7 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await login(email, password);
+      localStorage.setItem("token", response.access_token);
       return response.access_token;
     } catch {
       return rejectWithValue("Login failed");
@@ -35,6 +36,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.token = null;
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
