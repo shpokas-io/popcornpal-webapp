@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   TextField,
@@ -8,10 +8,12 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { loginUser } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { loading, error, token } = useAppSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +22,12 @@ const Login: React.FC = () => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   return (
     <Box
