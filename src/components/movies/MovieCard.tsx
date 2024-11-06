@@ -10,21 +10,33 @@ import {
 import { Movie } from "../../types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { addFavorite, openModal } from "../../features/movies/movieSlice";
+import {
+  addFavorite,
+  removeFavorite,
+  openModal,
+} from "../../features/movies/movieSlice";
 
 interface MovieCardProps {
   movie: Movie;
+  isFavorite?: boolean;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleAddToFavorites = async (event: React.MouseEvent) => {
+  const handleFavoriteToggle = async (event: React.MouseEvent) => {
     event.stopPropagation();
     try {
-      await dispatch(addFavorite(String(movie.id)));
+      if (isFavorite) {
+        await dispatch(removeFavorite(String(movie.id)));
+      } else {
+        await dispatch(addFavorite(String(movie.id)));
+      }
     } catch (error) {
-      console.error("Error adding favorite:", error);
+      console.error(
+        `Error ${isFavorite ? "removing from" : "adding to"} favorites:`,
+        error
+      );
     }
   };
 
@@ -53,11 +65,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       <Box textAlign="center" mb={2}>
         <Button
           variant="contained"
-          color="primary"
+          color={isFavorite ? "secondary" : "primary"}
           size="small"
-          onClick={handleAddToFavorites}
+          onClick={handleFavoriteToggle}
         >
-          Add to Favorites
+          {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
         </Button>
         <Button
           variant="outlined"

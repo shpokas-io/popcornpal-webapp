@@ -18,7 +18,6 @@ const FavoritesPage: React.FC = () => {
   }, [dispatch]);
 
   //Pagination logic for favorites
-
   const totalFavorites = favorites.length;
   const paginatedFavorites = favorites.slice(
     (currentPage - 1) * moviesPerPage,
@@ -59,7 +58,7 @@ const FavoritesPage: React.FC = () => {
       <Grid container spacing={4}>
         {paginatedFavorites.map((movie) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
-            <MovieCard movie={movie} />
+            <MovieCard movie={movie} isFavorite={true} />
           </Grid>
         ))}
       </Grid>

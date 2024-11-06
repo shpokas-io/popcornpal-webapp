@@ -58,6 +58,18 @@ export const addFavorite = createAsyncThunk<void, string>(
   }
 );
 
+//Remove favorite
+export const removeFavorite = createAsyncThunk<void, string>(
+  "movies/removeFavorite",
+  async (movieId: string, { getState }) => {
+    const state = getState() as RootState;
+    const token = state.auth.token;
+    await axios.delete(`http://localhost:3000/movies/${movieId}/favorite`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+);
+
 //Fetch favorites from the backend
 export const fetchFavorites = createAsyncThunk(
   "movies/fetchFavorites",
@@ -125,6 +137,11 @@ const movieSlice = createSlice({
         if (movie && !state.favorites.some((fav) => fav.id === movie.id)) {
           state.favorites.push(movie);
         }
+      })
+      .addCase(removeFavorite.fulfilled, (state, action) => {
+        state.favorites = state.favorites.filter(
+          (fav) => fav.id !== action.meta.arg
+        );
       })
       .addCase(fetchFavorites.fulfilled, (state, action) => {
         state.favorites = action.payload;
