@@ -5,7 +5,7 @@ interface Movie {
   id: number;
   title: string;
   description: string;
-  posterUrl: string;
+  poster_url: string;
 }
 
 interface MovieState {
@@ -22,8 +22,8 @@ const initialState: MovieState = {
 
 //Async thunk for fetching movies from the backend
 export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
-  const response = await axios.get("/api/movies");
-  return Array.isArray(response.data) ? response.data : [];
+  const response = await axios.get("http://localhost:3000/movies");
+  return Array.isArray(response.data.data) ? response.data.data : [];
 });
 
 const movieSlice = createSlice({

@@ -28,6 +28,10 @@ const MoviesPage: React.FC = () => {
     dispatch(fetchMovies());
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log("Movies from Redux:", movies);
+  }, [movies]);
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -84,7 +88,9 @@ const MoviesPage: React.FC = () => {
                 <CardMedia
                   component="img"
                   height="300"
-                  image={movie.posterUrl}
+                  image={
+                    movie.poster_url || "https://via.placeholder.com/300x450"
+                  }
                   alt={movie.title}
                 />
                 <CardContent sx={{ height: 100, overflow: "hidden" }}>
