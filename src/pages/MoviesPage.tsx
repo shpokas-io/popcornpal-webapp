@@ -10,6 +10,7 @@ import {
   CardMedia,
   Button,
 } from "@mui/material";
+import logo from "../assets/images/logo-nobc.png";
 
 const MoviesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,9 +48,29 @@ const MoviesPage: React.FC = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Movies
-      </Typography>
+      {/* Logo */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        mt={4}
+        mb={4}
+      >
+        <img
+          src={logo}
+          alt="PopcornPal Logo"
+          style={{ width: "150px", marginBottom: "20px" }}
+        />
+        <Typography
+          variant="h6"
+          color="textSecondary"
+          textAlign="center"
+          gutterBottom
+        >
+          "Prepare for movie overload! You're about to enter a world where
+          popcorn is a food group and reality is optional."
+        </Typography>
+      </Box>
 
       {/* Search Bar */}
       <TextField

@@ -34,6 +34,35 @@ const theme = createTheme({
       color: "#fff",
     },
   },
+
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#b3b3b3",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#e0e0e0",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#ff6e7f",
+          },
+          color: "#e0e0e0",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "#b3b3b3",
+          "&.Mui-focused": {
+            color: "#ff6e7f",
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;
