@@ -9,14 +9,24 @@ import {
 } from "@mui/material";
 import { Movie } from "../../types";
 import { useDispatch } from "react-redux";
-import { openModal } from "../../features/movies/movieSlice";
+import { AppDispatch } from "../../app/store";
+import { addFavorite, openModal } from "../../features/movies/movieSlice";
 
 interface MovieCardProps {
   movie: Movie;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToFavorites = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    try {
+      await dispatch(addFavorite(Number(movie.id)));
+    } catch (error) {
+      console.error("Error adding favorite:", error);
+    }
+  };
 
   return (
     <Card
@@ -41,7 +51,23 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         </Typography>
       </CardContent>
       <Box textAlign="center" mb={2}>
-        <Button variant="contained" color="primary" size="small">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={handleAddToFavorites}
+        >
+          Add to Favorites
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() =>
+            dispatch(openModal({ ...movie, id: Number(movie.id) }))
+          }
+          sx={{ ml: 1 }}
+        >
           View Details
         </Button>
       </Box>

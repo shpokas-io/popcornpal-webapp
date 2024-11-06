@@ -14,6 +14,7 @@ interface Movie {
 
 interface MovieState {
   movies: Movie[];
+  favorites: Movie[];
   loading: boolean;
   error: string | null;
   sortOption: string;
@@ -27,6 +28,7 @@ interface MovieState {
 
 const initialState: MovieState = {
   movies: [],
+  favorites: [],
   loading: false,
   error: null,
   sortOption: "title",
@@ -38,14 +40,21 @@ const initialState: MovieState = {
   totalMovies: 0,
 };
 
-//Fetch movies from the backend
+// Fetch movies from the backend
 export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
   const response = await axios.get("http://localhost:3000/movies");
   return Array.isArray(response.data.data) ? response.data.data : [];
 });
 
-// Function to handle sorting
-const sortMovies = (movies: Movie[], sortOption: string) => {
+// Add a movie to favorites in the backend
+export const addFavorite = createAsyncThunk<void, number>(
+  "movies/addFavorite",
+  async (movieId: number) => {
+    await axios.post(`http://localhost:3000/movies/${movieId}/favorite`);
+  }
+);
+
+export const sortMovies = (movies: Movie[], sortOption: string) => {
   return [...movies].sort((a, b) => {
     if (sortOption === "title") return a.title.localeCompare(b.title);
     if (sortOption === "release_date")
@@ -57,6 +66,15 @@ const sortMovies = (movies: Movie[], sortOption: string) => {
     return 0;
   });
 };
+
+// Fetch favorites from the backend
+export const fetchFavorites = createAsyncThunk(
+  "movies/fetchFavorites",
+  async () => {
+    const response = await axios.get("http://localhost:3000/movies/favorites");
+    return response.data.data;
+  }
+);
 
 const movieSlice = createSlice({
   name: "movies",
@@ -91,6 +109,17 @@ const movieSlice = createSlice({
         state.loading = false;
         state.totalMovies = action.payload.length;
         state.movies = sortMovies(action.payload, state.sortOption);
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        const movie = state.movies.find(
+          (movie) => movie.id === action.meta.arg
+        );
+        if (movie && !state.favorites.some((fav) => fav.id === movie.id)) {
+          state.favorites.push(movie);
+        }
+      })
+      .addCase(fetchFavorites.fulfilled, (state, action) => {
+        state.favorites = action.payload;
       })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.loading = false;

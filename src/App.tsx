@@ -10,6 +10,7 @@ import { store } from "./app/store";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import MoviesPage from "./pages/MoviesPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import NavBar from "./components/NavBar";
 import { useAppSelector } from "./hooks/hooks";
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
@@ -43,6 +44,10 @@ const App: React.FC = () => {
               <Route
                 path="/movies"
                 element={token ? <MoviesPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/favorites"
+                element={token ? <FavoritesPage /> : <Navigate to="/login" />}
               />
             </Routes>
           </Router>
