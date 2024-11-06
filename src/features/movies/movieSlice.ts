@@ -23,7 +23,7 @@ const initialState: MovieState = {
 //Async thunk for fetching movies from the backend
 export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
   const response = await axios.get("/api/movies");
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 });
 
 const movieSlice = createSlice({

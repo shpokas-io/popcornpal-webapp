@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container,Grid,TextField,Typography,Box,Card,CardContent,CardMedia,Button } from "@mui/material";
+import {
+  Container,
+  Grid,
+  TextField,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
 import { fetchMovies } from "../features/movies/movieSlice";
@@ -8,13 +18,14 @@ import logo from "../assets/images/logo-nobc.png";
 const MoviesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  
-  //Acces movies,loading and error state from Redux
-  const {movies, loading,error}= useSelector((state: RootState) => state.movies);
-  }
 
-  useEffect(()=> {
-    dispatchEvent(fetchMovies());
+  //Acces movies,loading and error state from Redux
+  const { movies, loading, error } = useSelector(
+    (state: RootState) => state.movies
+  );
+
+  useEffect(() => {
+    dispatch(fetchMovies());
   }, [dispatch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +69,12 @@ const MoviesPage: React.FC = () => {
       />
 
       {/* Loading and Error MEssages */}
-{loading && <Typography>Loading movies...</Typography>}
-{error && <Typography color="error">{error}</Typography>}
-
+      {loading && <Typography>Loading movies...</Typography>}
+      {error && <Typography color="error">{error}</Typography>}
 
       {/* Movie Grid */}
       <Grid container spacing={4}>
-        {movies
+        {(movies || [])
           .filter((movies) =>
             movies.title.toLowerCase().includes(searchTerm.toLowerCase())
           )
