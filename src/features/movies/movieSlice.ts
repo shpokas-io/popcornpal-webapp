@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import axios from "axios";
 
 interface Movie {
@@ -17,6 +18,10 @@ interface MovieState {
   error: string | null;
   sortOption: string;
   searchTerm: string;
+  selectedMovie: Movie | null;
+  isModalOpen: boolean;
+  currentPage: number;
+  moviesPerPage: number;
 }
 
 const initialState: MovieState = {
@@ -25,6 +30,10 @@ const initialState: MovieState = {
   error: null,
   sortOption: "title",
   searchTerm: "",
+  selectedMovie: null,
+  isModalOpen: false,
+  currentPage: 1,
+  moviesPerPage: 8,
 };
 
 //Fetch movies from the backend
@@ -36,16 +45,13 @@ export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
 // Function to handle sorting
 const sortMovies = (movies: Movie[], sortOption: string) => {
   return [...movies].sort((a, b) => {
-    if (sortOption === "title") {
-      return a.title.localeCompare(b.title);
-    } else if (sortOption === "release_date") {
+    if (sortOption === "title") return a.title.localeCompare(b.title);
+    if (sortOption === "release_date")
       return (
         (new Date(a.release_date || "").getTime() || 0) -
         (new Date(b.release_date || "").getTime() || 0)
       );
-    } else if (sortOption === "rating") {
-      return (a.rating || 0) - (b.rating || 0);
-    }
+    if (sortOption === "rating") return (a.rating || 0) - (b.rating || 0);
     return 0;
   });
 };
@@ -56,12 +62,23 @@ const movieSlice = createSlice({
   reducers: {
     setSortOption: (state, action: PayloadAction<string>) => {
       state.sortOption = action.payload;
-      state.movies = sortMovies(state.movies, state.sortOption);
     },
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
+    setPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+    openModal: (state, action: PayloadAction<Movie>) => {
+      state.selectedMovie = action.payload;
+      state.isModalOpen = true;
+    },
+    closeModal: (state) => {
+      state.selectedMovie = null;
+      state.isModalOpen = false;
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchMovies.pending, (state) => {
@@ -79,5 +96,18 @@ const movieSlice = createSlice({
   },
 });
 
-export const { setSortOption, setSearchTerm } = movieSlice.actions;
+export const { setSortOption, setSearchTerm, setPage, openModal, closeModal } =
+  movieSlice.actions;
+
+export const selectFilteredSortedMovies = (state: RootState) => {
+  const { movies, searchTerm, sortOption, currentPage, moviesPerPage } =
+    state.movies;
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const sortedMovies = sortMovies(filteredMovies, sortOption);
+  const startIndex = (currentPage - 1) * moviesPerPage;
+  return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
+};
+
 export default movieSlice.reducer;

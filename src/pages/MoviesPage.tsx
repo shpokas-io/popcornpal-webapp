@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Grid,
@@ -23,29 +23,25 @@ import {
   fetchMovies,
   setSortOption,
   setSearchTerm,
+  setPage,
+  openModal,
+  closeModal,
+  selectFilteredSortedMovies,
 } from "../features/movies/movieSlice";
 import logo from "../assets/images/logo-nobc.png";
 
-interface Movie {
-  id: string | number;
-  title: string;
-  description: string;
-  poster_url?: string;
-  genre?: string;
-  release_date?: string;
-  rating?: number;
-}
-
 const MoviesPage: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [page, setPage] = useState(1);
-  const moviesPerPage = 8;
-
   const dispatch = useDispatch<AppDispatch>();
-  const { movies, loading, error, sortOption, searchTerm } = useSelector(
-    (state: RootState) => state.movies
-  );
+  const {
+    loading,
+    error,
+    sortOption,
+    searchTerm,
+    selectedMovie,
+    isModalOpen,
+    currentPage,
+  } = useSelector((state: RootState) => state.movies);
+  const movies = useSelector(selectFilteredSortedMovies);
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -55,32 +51,9 @@ const MoviesPage: React.FC = () => {
     dispatch(setSearchTerm(event.target.value));
   };
 
-  const handleOpenModal = (movie: Movie) => {
-    setSelectedMovie(movie);
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedMovie(null);
-    setOpen(false);
-  };
-
-  const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-
   const handleSortChange = (event: SelectChangeEvent) => {
     dispatch(setSortOption(event.target.value as string));
   };
-
-  const filteredMovies = movies.filter((movies) =>
-    movies.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const displayedMovies = filteredMovies.slice(
-    (page - 1) * moviesPerPage,
-    page * moviesPerPage
-  );
 
   return (
     <Container>
@@ -133,7 +106,7 @@ const MoviesPage: React.FC = () => {
 
       {/* Movie Grid */}
       <Grid container spacing={4}>
-        {displayedMovies.map((movie) => (
+        {movies.map((movie) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
             <Card
               sx={{
@@ -143,7 +116,7 @@ const MoviesPage: React.FC = () => {
                   boxShadow: 3,
                 },
               }}
-              onClick={() => handleOpenModal(movie)}
+              onClick={() => dispatch(openModal(movie))}
             >
               <CardMedia
                 component="img"
@@ -174,24 +147,24 @@ const MoviesPage: React.FC = () => {
 
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination
-          count={Math.ceil(filteredMovies.length / moviesPerPage)}
-          page={page}
-          onChange={handleChangePage}
+          count={Math.ceil(movies.length / moviesPerPage)}
+          page={currentPage}
+          onChange={(_, value) => dispatch(setPage(value))}
           color="primary"
         />
       </Box>
 
       {/* Movie details modal */}
       <Modal
-        open={open}
-        onClose={handleCloseModal}
+        open={isModalOpen}
+        onClose={() => dispatch(closeModal())}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Fade in={open}>
+        <Fade in={isModalOpen}>
           <Box
             sx={{
               position: "absolute",
