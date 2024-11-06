@@ -13,11 +13,16 @@ const MainPage: React.FC = () => {
 
   //Array of dynamic welcome messages
   const welcomeMessages = [
-    "Welcome back, movie buff!",
-    "Ready to dive into some cinematic magic?",
-    "Lights, camera, action! Let’s find your next favorite movie.",
-    "Popcorn’s ready! Let's explore the movie world.",
-    "Ready for a binge-worthy experience?",
+    "Welcome back, Time to dive into someone else`s drama for a change.",
+    "Escaping reality, one movie at a time. We won’t tell.",
+    "Forget your problems—get lost in someone else’s scripted misery!",
+    "Let’s face it, the plot twists here are better than real life.",
+    "Welcome! Just remember, movie magic won’t fix real life… yet.",
+    "Reality is overrated. Let’s go somewhere fictional.",
+    "Need to forget the outside world? We’ve got just the ticket.",
+    "Movies: because reality is too real.",
+    "Here’s hoping today’s films are less disappointing than real life.",
+    "Escapism at its finest. Just… don’t look at the clock.",
   ];
 
   //Randomly select one message
@@ -33,7 +38,15 @@ const MainPage: React.FC = () => {
           alt="App Logo"
           style={{ width: "150px", marginBottom: "20px" }}
         />
-        <Typography variant="h4">{randomMessage}</Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
+          width="90%"
+          mt={2}
+        >
+          <Typography variant="h4">{randomMessage} </Typography>
+        </Box>
         <Typography>Authenticated Content Here</Typography>
         <Button
           variant="contained"
