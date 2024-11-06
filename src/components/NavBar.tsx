@@ -15,6 +15,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
@@ -33,10 +34,6 @@ const NavBar: React.FC = () => {
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
-  };
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
@@ -61,33 +58,65 @@ const NavBar: React.FC = () => {
         width: 250,
         backgroundColor: theme.palette.background.paper,
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
         paddingTop: 2,
       }}
       role="presentation"
       onClick={handleDrawerToggle}
       onKeyDown={handleDrawerToggle}
     >
-      <Typography variant="h6" sx={{ textAlign: "center", my: 2 }}>
-        PopcornPal
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem
-            key={item.label}
-            component={Link}
-            to={item.path}
-            sx={{
-              color: theme.palette.text.primary,
-              "&:hover": {
-                backgroundColor: theme.palette.action.hover,
-              },
-            }}
+      {/* Top content in the Drawer */}
+      <Box>
+        <Typography variant="h6" sx={{ textAlign: "center", my: 2 }}>
+          PopcornPal
+        </Typography>
+        <Divider />
+
+        {/* User Info and Logout inside Drawer on Mobile */}
+        {isMobile && (
+          <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+            <Avatar sx={{ bgcolor: "#ff6e7f", mb: 1 }}>U</Avatar>
+            <Typography variant="subtitle1">{userName}</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Favorite genre: {preferredGenre}
+            </Typography>
+            <Divider sx={{ my: 1, width: "80%" }} />
+          </Box>
+        )}
+
+        <List>
+          {navItems.map((item) => (
+            <ListItem
+              key={item.label}
+              component={Link}
+              to={item.path}
+              sx={{
+                color: theme.palette.text.primary,
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            >
+              <ListItemText primary={item.label} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+      {/* Bottom-aligned Logout button */}
+      {isMobile && (
+        <Box sx={{ p: 2 }}>
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            color="secondary"
+            fullWidth
           >
-            <ListItemText primary={item.label} />
-          </ListItem>
-        ))}
-      </List>
+            Logout
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 
@@ -168,10 +197,7 @@ const NavBar: React.FC = () => {
             </Box>
           )}
 
-          {/* User Icon and Menu */}
-          <IconButton color="inherit" onClick={handleMenuOpen}>
-            <Avatar sx={{ bgcolor: "#ff6e7f" }}>U</Avatar>
-          </IconButton>
+          {/* User Icon and Menu for Desktop */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

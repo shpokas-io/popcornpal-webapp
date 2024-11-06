@@ -1,16 +1,8 @@
-import { Typography, Box, Button } from "@mui/material";
-import { useAppDispatch } from "../hooks/hooks";
-import { logout } from "../features/auth/authSlice";
+import { Typography, Box } from "@mui/material";
 import NavBar from "../components/NavBar";
 import logo from "../assets/images/logo-nobc.png";
 
 const MainPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   //Array of dynamic welcome messages
   const welcomeMessages = [
     "Welcome back, Time to dive into someone else`s drama for a change.",
@@ -48,14 +40,6 @@ const MainPage: React.FC = () => {
           <Typography variant="h4">{randomMessage} </Typography>
         </Box>
         <Typography>Authenticated Content Here</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleLogout}
-          sx={{ mt: 2 }}
-        >
-          Logout
-        </Button>
       </Box>
     </>
   );
