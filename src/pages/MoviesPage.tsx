@@ -13,10 +13,12 @@ import {
   Modal,
   Fade,
   Backdrop,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
-import { fetchMovies } from "../features/movies/movieSlice";
+import { fetchMovies, setSortOption } from "../features/movies/movieSlice";
 import logo from "../assets/images/logo-nobc.png";
 
 interface Movie {
@@ -59,11 +61,12 @@ const MoviesPage: React.FC = () => {
     setOpen(false);
   };
 
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
+  const handleChangePage = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    dispatch(setSortOption(event.target.value as string));
   };
 
   const filteredMovies = movies.filter((movies) =>
@@ -110,6 +113,15 @@ const MoviesPage: React.FC = () => {
         onChange={handleSearch}
         sx={{ marginBottom: 2 }}
       />
+
+      {/* Sorting Dropdown */}
+      <Box display="flex" justifyContent="flex-end" mt={2} mb={2}>
+        <Select value={sortOption} onChange={handleSortChange}>
+          <MenuItem value="title">Sort by Title(A-Z)</MenuItem>
+          <MenuItem value="release_date">Sort by Release Date</MenuItem>
+          <MenuItem value="rating">Sort by Rating</MenuItem>
+        </Select>
+      </Box>
 
       {/* Loading and Error MEssages */}
       {loading && <Typography>Loading movies...</Typography>}
