@@ -16,6 +16,7 @@ interface MovieState {
   loading: boolean;
   error: string | null;
   sortOption: string;
+  searchTerm: string;
 }
 
 const initialState: MovieState = {
@@ -23,6 +24,7 @@ const initialState: MovieState = {
   loading: false,
   error: null,
   sortOption: "title",
+  searchTerm: "",
 };
 
 //Fetch movies from the backend
@@ -56,6 +58,9 @@ const movieSlice = createSlice({
       state.sortOption = action.payload;
       state.movies = sortMovies(state.movies, state.sortOption);
     },
+    setSearchTerm: (state, action: PayloadAction<string>) => {
+      state.searchTerm = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,5 +79,5 @@ const movieSlice = createSlice({
   },
 });
 
-export const { setSortOption } = movieSlice.actions;
+export const { setSortOption, setSearchTerm } = movieSlice.actions;
 export default movieSlice.reducer;

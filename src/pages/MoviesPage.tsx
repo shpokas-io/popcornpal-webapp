@@ -19,7 +19,11 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
-import { fetchMovies, setSortOption } from "../features/movies/movieSlice";
+import {
+  fetchMovies,
+  setSortOption,
+  setSearchTerm,
+} from "../features/movies/movieSlice";
 import logo from "../assets/images/logo-nobc.png";
 
 interface Movie {
@@ -33,14 +37,13 @@ interface Movie {
 }
 
 const MoviesPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [page, setPage] = useState(1);
   const moviesPerPage = 8;
 
   const dispatch = useDispatch<AppDispatch>();
-  const { movies, loading, error, sortOption } = useSelector(
+  const { movies, loading, error, sortOption, searchTerm } = useSelector(
     (state: RootState) => state.movies
   );
 
@@ -49,7 +52,7 @@ const MoviesPage: React.FC = () => {
   }, [dispatch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    dispatch(setSearchTerm(event.target.value));
   };
 
   const handleOpenModal = (movie: Movie) => {
