@@ -35,8 +35,8 @@ const NavBar: React.FC = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleMenuOpen = () => {
-    setAnchorEl(null);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
