@@ -3,7 +3,7 @@ import { RootState } from "../../app/store";
 import axios from "axios";
 
 interface Movie {
-  id: number;
+  id: string;
   title: string;
   description: string;
   poster_url?: string;
@@ -47,10 +47,27 @@ export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
 });
 
 // Add a movie to favorites in the backend
-export const addFavorite = createAsyncThunk<void, number>(
+export const addFavorite = createAsyncThunk<void, string>(
   "movies/addFavorite",
-  async (movieId: number) => {
-    await axios.post(`http://localhost:3000/movies/${movieId}/favorite`);
+  async (movieId: string, { getState }) => {
+    const state = getState() as RootState;
+    const token = state.auth.token;
+    await axios.post(`http://localhost:3000/movies/${movieId}/favorite`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+);
+
+//Fetch favorites from the backend
+export const fetchFavorites = createAsyncThunk(
+  "movies/fetchFavorites",
+  async (_, { getState }) => {
+    const state = getState() as RootState;
+    const token = state.auth.token;
+    const response = await axios.get("http://localhost:3000/movies/favorites", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
   }
 );
 
@@ -66,15 +83,6 @@ export const sortMovies = (movies: Movie[], sortOption: string) => {
     return 0;
   });
 };
-
-// Fetch favorites from the backend
-export const fetchFavorites = createAsyncThunk(
-  "movies/fetchFavorites",
-  async () => {
-    const response = await axios.get("http://localhost:3000/movies/favorites");
-    return response.data.data;
-  }
-);
 
 const movieSlice = createSlice({
   name: "movies",

@@ -22,7 +22,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const handleAddToFavorites = async (event: React.MouseEvent) => {
     event.stopPropagation();
     try {
-      await dispatch(addFavorite(Number(movie.id)));
+      await dispatch(addFavorite(String(movie.id)));
     } catch (error) {
       console.error("Error adding favorite:", error);
     }
@@ -34,7 +34,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         transition: "transform 0.3s, box-shadow 0.3s",
         "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
       }}
-      onClick={() => dispatch(openModal({ ...movie, id: Number(movie.id) }))}
+      onClick={() => dispatch(openModal({ ...movie, id: String(movie.id) }))}
     >
       <CardMedia
         component="img"
@@ -64,7 +64,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           color="primary"
           size="small"
           onClick={() =>
-            dispatch(openModal({ ...movie, id: Number(movie.id) }))
+            dispatch(openModal({ ...movie, id: String(movie.id) }))
           }
           sx={{ ml: 1 }}
         >
