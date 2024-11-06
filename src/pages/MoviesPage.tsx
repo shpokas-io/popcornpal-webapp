@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Container,
   Grid,
@@ -18,9 +18,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../app/store";
+import { RootState } from "../app/store";
 import {
-  fetchMovies,
   setSortOption,
   setSearchTerm,
   setPage,
@@ -28,17 +27,20 @@ import {
   closeModal,
   selectFilteredSortedMovies,
   selectFilteredMoviesCount,
+  selectModalState,
 } from "../features/movies/movieSlice";
+import { useFetchMovies } from "../hooks/hooks";
 import logo from "../assets/images/logo-nobc.png";
 
 const MoviesPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  useFetchMovies();
+  const dispatch = useDispatch();
+
   const {
     loading,
     error,
     sortOption,
     searchTerm,
-    selectedMovie,
     isModalOpen,
     currentPage,
     moviesPerPage,
@@ -46,10 +48,7 @@ const MoviesPage: React.FC = () => {
 
   const movies = useSelector(selectFilteredSortedMovies);
   const totalFilteredMovies = useSelector(selectFilteredMoviesCount);
-
-  useEffect(() => {
-    dispatch(fetchMovies());
-  }, [dispatch]);
+  const { isOpen, movie: selectedMovie } = useSelector(selectModalState);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchTerm(event.target.value));

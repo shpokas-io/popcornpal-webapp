@@ -120,4 +120,9 @@ export const selectFilteredMoviesCount = (state: RootState) => {
   ).length;
 };
 
+export const selectModalState = (state: RootState) => ({
+  isOpen: state.movies.isModalOpen,
+  movie: state.movies.selectedMovie,
+});
+
 export default movieSlice.reducer;
