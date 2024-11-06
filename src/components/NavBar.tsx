@@ -12,18 +12,40 @@ import {
   useMediaQuery,
   Divider,
   Container,
+  Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { logout } from "../features/auth/authSlice";
 
 const NavBar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  const dispatch = useAppDispatch();
+  const { userName, preferredGenre } = useAppSelector((state) => state.auth);
+
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
+  };
+
+  const handleMenuOpen = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleMenuClose();
   };
 
   const navItems = [
@@ -68,6 +90,7 @@ const NavBar: React.FC = () => {
       </List>
     </Box>
   );
+
   return (
     <AppBar
       position="static"
@@ -144,6 +167,29 @@ const NavBar: React.FC = () => {
               ))}
             </Box>
           )}
+
+          {/* User Icon and Menu */}
+          <IconButton color="inherit" onClick={handleMenuOpen}>
+            <Avatar sx={{ bgcolor: "#ff6e7f" }}>U</Avatar>
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <MenuItem>
+              <Typography variant="subtitle1">{userName}</Typography>
+            </MenuItem>
+            <MenuItem>
+              <Typography variant="body2">
+                Favorite genre: {preferredGenre}
+              </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </Container>
     </AppBar>
