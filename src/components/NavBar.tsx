@@ -198,24 +198,34 @@ const NavBar: React.FC = () => {
           )}
 
           {/* User Icon and Menu for Desktop */}
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-          >
-            <MenuItem>
-              <Typography variant="subtitle1">{userName}</Typography>
-            </MenuItem>
-            <MenuItem>
-              <Typography variant="body2">
-                Favorite genre: {preferredGenre}
-              </Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
+          {!isMobile && (
+            <>
+              <IconButton
+                color="inherit"
+                onClick={(event) => setAnchorEl(event.currentTarget)}
+              >
+                <Avatar sx={{ bgcolor: "#ff6e7f" }}>U</Avatar>
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <MenuItem>
+                  <Typography variant="subtitle1">{userName}</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography variant="body2">
+                    Favorite genre: {preferredGenre}
+                  </Typography>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
