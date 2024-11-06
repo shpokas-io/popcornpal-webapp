@@ -97,17 +97,20 @@ const MoviesPage: React.FC = () => {
                   image={movie.posterUrl}
                   alt={movie.title}
                 />
-                <CardContent>
-                  <Typography variant="h6">{movie.title}</Typography>
-                  <Typography variant="body2" color="textSecondary">
+                <CardContent sx={{ height: 100, overflow: "hidden" }}>
+                  <Typography variant="h6" noWrap>
+                    {movie.title}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" noWrap>
                     {movie.description}
                   </Typography>
-                  <Box mt={2}>
-                    <Button variant="contained" color="primary" size="small">
-                      View Details
-                    </Button>
-                  </Box>
                 </CardContent>
+
+                <Box textAlign="center" mb={2}>
+                  <Button variant="contained" color="primary" size="small">
+                    View Details
+                  </Button>
+                </Box>
               </Card>
             </Grid>
           ))}
