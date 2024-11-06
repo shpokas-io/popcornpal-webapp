@@ -22,6 +22,7 @@ interface MovieState {
   isModalOpen: boolean;
   currentPage: number;
   moviesPerPage: number;
+  totalMovies: number;
 }
 
 const initialState: MovieState = {
@@ -34,6 +35,7 @@ const initialState: MovieState = {
   isModalOpen: false,
   currentPage: 1,
   moviesPerPage: 8,
+  totalMovies: 0,
 };
 
 //Fetch movies from the backend
@@ -87,6 +89,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.loading = false;
+        state.totalMovies = action.payload.length;
         state.movies = sortMovies(action.payload, state.sortOption);
       })
       .addCase(fetchMovies.rejected, (state, action) => {
@@ -108,6 +111,13 @@ export const selectFilteredSortedMovies = (state: RootState) => {
   const sortedMovies = sortMovies(filteredMovies, sortOption);
   const startIndex = (currentPage - 1) * moviesPerPage;
   return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
+};
+
+export const selectFilteredMoviesCount = (state: RootState) => {
+  const { movies, searchTerm } = state.movies;
+  return movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+  ).length;
 };
 
 export default movieSlice.reducer;

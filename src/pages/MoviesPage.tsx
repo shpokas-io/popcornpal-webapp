@@ -27,6 +27,7 @@ import {
   openModal,
   closeModal,
   selectFilteredSortedMovies,
+  selectFilteredMoviesCount,
 } from "../features/movies/movieSlice";
 import logo from "../assets/images/logo-nobc.png";
 
@@ -40,8 +41,11 @@ const MoviesPage: React.FC = () => {
     selectedMovie,
     isModalOpen,
     currentPage,
+    moviesPerPage,
   } = useSelector((state: RootState) => state.movies);
+
   const movies = useSelector(selectFilteredSortedMovies);
+  const totalFilteredMovies = useSelector(selectFilteredMoviesCount);
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -147,7 +151,7 @@ const MoviesPage: React.FC = () => {
 
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination
-          count={Math.ceil(movies.length / moviesPerPage)}
+          count={Math.ceil(totalFilteredMovies / moviesPerPage)}
           page={currentPage}
           onChange={(_, value) => dispatch(setPage(value))}
           color="primary"
