@@ -15,6 +15,7 @@ import {
   Backdrop,
   MenuItem,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
@@ -39,7 +40,7 @@ const MoviesPage: React.FC = () => {
   const moviesPerPage = 8;
 
   const dispatch = useDispatch<AppDispatch>();
-  const { movies, loading, error } = useSelector(
+  const { movies, loading, error, sortOption } = useSelector(
     (state: RootState) => state.movies
   );
 
@@ -65,7 +66,7 @@ const MoviesPage: React.FC = () => {
     setPage(value);
   };
 
-  const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSortChange = (event: SelectChangeEvent) => {
     dispatch(setSortOption(event.target.value as string));
   };
 
