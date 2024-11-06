@@ -9,6 +9,8 @@ import {
 import { store } from "./app/store";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
+import MoviesPage from "./pages/MoviesPage";
+import NavBar from "./components/NavBar";
 import { useAppSelector } from "./hooks/hooks";
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
 import theme from "./theme";
@@ -28,6 +30,7 @@ const App: React.FC = () => {
           }}
         >
           <Router>
+            {token && <NavBar />}
             <Routes>
               <Route
                 path="/login"
@@ -36,6 +39,10 @@ const App: React.FC = () => {
               <Route
                 path="/"
                 element={token ? <MainPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/movies"
+                element={token ? <MoviesPage /> : <Navigate to="/login" />}
               />
             </Routes>
           </Router>

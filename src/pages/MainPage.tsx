@@ -1,5 +1,4 @@
 import { Typography, Box } from "@mui/material";
-import NavBar from "../components/NavBar";
 import logo from "../assets/images/logo-nobc.png";
 
 const MainPage: React.FC = () => {
@@ -23,7 +22,6 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      <NavBar />
       <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
         <img
           src={logo}
