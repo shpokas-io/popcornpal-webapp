@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Pagination,
   Button,
   Modal,
   Fade,
@@ -32,9 +33,10 @@ const MoviesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  const [page, setPage] = useState(1);
+  const moviesPerPage = 8;
 
-  //Access movies,loading and error state from Redux
+  const dispatch = useDispatch<AppDispatch>();
   const { movies, loading, error } = useSelector(
     (state: RootState) => state.movies
   );
@@ -56,6 +58,22 @@ const MoviesPage: React.FC = () => {
     setSelectedMovie(null);
     setOpen(false);
   };
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const filteredMovies = movies.filter((movies) =>
+    movies.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const displayedMovies = filteredMovies.slice(
+    (page - 1) * moviesPerPage,
+    page * moviesPerPage
+  );
 
   return (
     <Container>
@@ -99,48 +117,53 @@ const MoviesPage: React.FC = () => {
 
       {/* Movie Grid */}
       <Grid container spacing={4}>
-        {(movies || [])
-          .filter((movies) =>
-            movies.title.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-          .map((movie) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
-              <Card
-                sx={{
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    boxShadow: 3,
-                  },
-                }}
-                onClick={() => handleOpenModal(movie)}
-              >
-                <CardMedia
-                  component="img"
-                  height="300"
-                  image={
-                    movie.poster_url || "https://via.placeholder.com/300x450"
-                  }
-                  alt={movie.title}
-                />
-                <CardContent sx={{ height: 100, overflow: "hidden" }}>
-                  <Typography variant="h6" noWrap>
-                    {movie.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" noWrap>
-                    {movie.description}
-                  </Typography>
-                </CardContent>
+        {displayedMovies.map((movie) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
+            <Card
+              sx={{
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: 3,
+                },
+              }}
+              onClick={() => handleOpenModal(movie)}
+            >
+              <CardMedia
+                component="img"
+                height="300"
+                image={
+                  movie.poster_url || "https://via.placeholder.com/300x450"
+                }
+                alt={movie.title}
+              />
+              <CardContent sx={{ height: 100, overflow: "hidden" }}>
+                <Typography variant="h6" noWrap>
+                  {movie.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" noWrap>
+                  {movie.description}
+                </Typography>
+              </CardContent>
 
-                <Box textAlign="center" mb={2}>
-                  <Button variant="contained" color="primary" size="small">
-                    View Details
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
+              <Box textAlign="center" mb={2}>
+                <Button variant="contained" color="primary" size="small">
+                  View Details
+                </Button>
+              </Box>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
+
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Pagination
+          count={Math.ceil(filteredMovies.length / moviesPerPage)}
+          page={page}
+          onChange={handleChangePage}
+          color="primary"
+        />
+      </Box>
 
       {/* Movie details modal */}
       <Modal
