@@ -1,46 +1,21 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Grid,
-  TextField,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container,Grid,TextField,Typography,Box,Card,CardContent,CardMedia,Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../app/store";
+import { fetchMovies } from "../features/movies/movieSlice";
 import logo from "../assets/images/logo-nobc.png";
 
 const MoviesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  //Hardcoded movies data(replace with redux later)
-  const movies = [
-    {
-      id: 1,
-      title: "Inception",
-      description: "A mind-bending thriller by Christopher Nolan.",
-      posterUrl: "https://via.placeholder.com/300x450",
-    },
-    {
-      id: 2,
-      title: "Interstellar",
-      description: "A journey beyond the stars and time.",
-      posterUrl: "https://via.placeholder.com/300x450",
-    },
-    {
-      id: 3,
-      title: "The Dark Knight",
-      description: "A gritty, action-packed Batman story.",
-      posterUrl: "https://via.placeholder.com/300x450",
-    },
-    {
-      id: 4,
-      title: "The Matrix",
-      description: "Reality is a simulation.",
-      posterUrl: "https://via.placeholder.com/300x450",
-    },
-  ];
+  const dispatch = useDispatch<AppDispatch>();
+  
+  //Acces movies,loading and error state from Redux
+  const {movies, loading,error}= useSelector((state: RootState) => state.movies);
+  }
+
+  useEffect(()=> {
+    dispatchEvent(fetchMovies());
+  }, [dispatch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -81,6 +56,11 @@ const MoviesPage: React.FC = () => {
         onChange={handleSearch}
         sx={{ marginBottom: 2 }}
       />
+
+      {/* Loading and Error MEssages */}
+{loading && <Typography>Loading movies...</Typography>}
+{error && <Typography color="error">{error}</Typography>}
+
 
       {/* Movie Grid */}
       <Grid container spacing={4}>
