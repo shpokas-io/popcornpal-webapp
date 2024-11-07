@@ -72,7 +72,7 @@ const NavBar: React.FC = () => {
               </Drawer>
             </>
           ) : (
-            <Box sx={{ display: "flex", gap: 4 }}>
+            <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
               {navItems.map((item) => (
                 <Typography
                   key={item.label}

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { LoginPayload, LoginResponse, ApiLoginResponse } from "./authTypes";
-import { login } from "../../api/authApi";
+import { login } from "./authApi";
 import { saveTokenToLocalStorage } from "./authUtils";
 
 export const loginUser = createAsyncThunk(

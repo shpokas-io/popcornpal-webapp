@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Modal, Fade, Box, Typography, Button, Backdrop } from "@mui/material";
 import { closeModal } from "../../features/movies/movieSlice";
-import { Movie } from "../../types";
+import { Movie } from "../../features/movies/movieTypes";
 
 interface MovieModalProps {
   isOpen: boolean;
@@ -50,7 +50,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ isOpen, movie }) => {
               </Typography>
               <Typography
                 variant="subtitle1"
-                color="textSecondary"
+                color="textSecondary"q
                 gutterBottom
               >
                 Rating: {movie.rating}

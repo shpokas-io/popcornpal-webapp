@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Grid, Typography, Box, Pagination } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import {
   setPage,
@@ -8,15 +8,15 @@ import {
   selectFilteredMoviesCount,
   selectModalState,
 } from "../features/movies/movieSlice";
-import { useFetchMovies } from "../hooks/hooks";
+import { useAppDispatch } from "../hooks/hooks";
 import MovieCard from "../components/movies/MovieCard";
 import MovieModal from "../components/movies/MovieModal";
+import { fetchMovies } from "../features/movies/movieThunks";
 import SearchAndSortControls from "../components/movies/SearchAndSortControls";
 import logo from "../assets/images/logo-nobc.png";
 
 const MoviesPage: React.FC = () => {
-  useFetchMovies();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { loading, error, currentPage, moviesPerPage } = useSelector(
     (state: RootState) => state.movies
@@ -24,6 +24,10 @@ const MoviesPage: React.FC = () => {
   const movies = useSelector(selectFilteredSortedMovies);
   const totalFilteredMovies = useSelector(selectFilteredMoviesCount);
   const { isOpen, movie: selectedMovie } = useSelector(selectModalState);
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, [dispatch]);
 
   return (
     <Container>

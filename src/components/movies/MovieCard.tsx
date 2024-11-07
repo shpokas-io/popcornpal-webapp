@@ -7,11 +7,11 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { Movie } from "../../types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { addFavorite, removeFavorite } from "../../features/movies/movieThunks";
 import { openModal } from "../../features/movies/movieSlice";
+import { Movie } from "../../features/movies/movieTypes";
 
 interface MovieCardProps {
   movie: Movie;
