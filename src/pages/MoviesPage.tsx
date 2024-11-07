@@ -27,7 +27,6 @@ const MoviesPage: React.FC = () => {
 
   return (
     <Container>
-      {/* Logo */}
       <Box
         display="flex"
         flexDirection="column"

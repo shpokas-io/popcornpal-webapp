@@ -2,7 +2,6 @@ import { Typography, Box } from "@mui/material";
 import logo from "../assets/images/logo-nobc.png";
 
 const MainPage: React.FC = () => {
-  //Array of dynamic welcome messages
   const welcomeMessages = [
     "Welcome back, Time to dive into someone else`s drama for a change.",
     "Escaping reality, one movie at a time. We won’t tell.",
@@ -16,7 +15,6 @@ const MainPage: React.FC = () => {
     "Escapism at its finest. Just… don’t look at the clock.",
   ];
 
-  //Randomly select one message
   const randomMessage =
     welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
 
@@ -37,7 +35,6 @@ const MainPage: React.FC = () => {
         >
           <Typography variant="h4">{randomMessage} </Typography>
         </Box>
-        <Typography>Authenticated Content Here</Typography>
       </Box>
     </>
   );
