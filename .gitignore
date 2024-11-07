@@ -1,25 +1,42 @@
+# Node modules
+node_modules/
+
+# Build output directories (for Vite, if it generates dist/ or other build directories)
+dist/
+dist-ssr/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Lock files for package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+# Editor directories and configuration files
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env
+.DS_Store
+
+# TypeScript build artifacts
+*.tsbuildinfo
+
+# Vite-specific cache
+.vite/
+
+# Coverage reports
+coverage/
