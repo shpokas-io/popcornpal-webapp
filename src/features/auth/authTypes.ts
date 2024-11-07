@@ -11,8 +11,12 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface ApiLoginResponse {
+  access_token: string;
+}
+
 export interface LoginResponse {
   token: string;
-  userName: string;
-  preferredGenre: string;
+  userName: string | null;
+  preferredGenre: string | null;
 }

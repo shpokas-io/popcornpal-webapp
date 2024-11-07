@@ -7,7 +7,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { loginUser } from "../features/auth/authSlice";
+import { loginUser } from "../features/auth/authThunks";
 import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
