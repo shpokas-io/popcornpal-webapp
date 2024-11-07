@@ -1,42 +1,18 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { login } from "../../api/authApi";
-
-interface AuthState {
-  token: string | null;
-  userName: string | null;
-  preferredGenre: string | null;
-  loading: boolean;
-  error: string | null;
-}
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthState, LoginResponse } from "./authTypes";
+import { loginUser } from "./authThunks";
+import {
+  getTokenFromLocalStorage,
+  removeTokenFromLocalStorage,
+} from "./authUtils";
 
 const initialState: AuthState = {
-  token: localStorage.getItem("token"),
+  token: getTokenFromLocalStorage(),
   userName: null,
   preferredGenre: null,
   loading: false,
   error: null,
 };
-
-//Async action for login
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (
-    { email, password }: { email: string; password: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await login(email, password);
-      localStorage.setItem("token", response.access_token);
-      return {
-        token: response.access_token,
-        userName: response.userName,
-        preferredGenre: response.preferredGenre,
-      };
-    } catch {
-      return rejectWithValue("Login failed");
-    }
-  }
-);
 
 const authSlice = createSlice({
   name: "auth",
@@ -46,7 +22,7 @@ const authSlice = createSlice({
       state.token = null;
       state.userName = null;
       state.preferredGenre = null;
-      localStorage.removeItem("token");
+      removeTokenFromLocalStorage();
     },
   },
   extraReducers: (builder) => {
@@ -57,14 +33,7 @@ const authSlice = createSlice({
       })
       .addCase(
         loginUser.fulfilled,
-        (
-          state,
-          action: PayloadAction<{
-            token: string;
-            userName: string;
-            preferredGenre: string;
-          }>
-        ) => {
+        (state, action: PayloadAction<LoginResponse>) => {
           state.loading = false;
           state.token = action.payload.token;
           state.userName = action.payload.userName;
