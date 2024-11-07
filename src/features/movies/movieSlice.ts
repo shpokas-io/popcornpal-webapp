@@ -52,9 +52,13 @@ export const addFavorite = createAsyncThunk<void, string>(
   async (movieId: string, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.token;
-    await axios.post(`http://localhost:3000/movies/${movieId}/favorite`, null, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axios.post(
+      `http://localhost:3000/movies/${String(movieId)}/favorite`,
+      null,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   }
 );
 
@@ -64,9 +68,12 @@ export const removeFavorite = createAsyncThunk<void, string>(
   async (movieId: string, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.token;
-    await axios.delete(`http://localhost:3000/movies/${movieId}/favorite`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axios.delete(
+      `http://localhost:3000/movies/${String(movieId)}/favorite`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   }
 );
 
