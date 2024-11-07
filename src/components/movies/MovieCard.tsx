@@ -10,11 +10,8 @@ import {
 import { Movie } from "../../types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import {
-  addFavorite,
-  removeFavorite,
-  openModal,
-} from "../../features/movies/movieSlice";
+import { addFavorite, removeFavorite } from "../../features/movies/movieThunks";
+import { openModal } from "../../features/movies/movieSlice";
 
 interface MovieCardProps {
   movie: Movie;

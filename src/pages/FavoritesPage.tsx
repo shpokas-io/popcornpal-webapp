@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Container, Grid, Typography, Box, Pagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
-import { setPage, fetchFavorites } from "../features/movies/movieSlice";
+import { setPage } from "../features/movies/movieSlice";
+import { fetchFavorites } from "../features/movies/movieThunks";
 import MovieCard from "../components/movies/MovieCard";
 import logo from "../assets/images/logo-nobc.png";
 

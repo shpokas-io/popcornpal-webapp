@@ -1,8 +1,14 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import axios from "axios";
+import {
+  fetchMovies,
+  addFavorite,
+  removeFavorite,
+  fetchFavorites,
+} from "../movies/movieThunks";
+import { sortMovies } from "./movieUtils";
 
-interface Movie {
+export interface Movie {
   id: string;
   title: string;
   description: string;
@@ -38,69 +44,6 @@ const initialState: MovieState = {
   currentPage: 1,
   moviesPerPage: 8,
   totalMovies: 0,
-};
-
-// Fetch movies from the backend
-export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
-  const response = await axios.get("http://localhost:3000/movies");
-  return Array.isArray(response.data.data) ? response.data.data : [];
-});
-
-// Add a movie to favorites in the backend
-export const addFavorite = createAsyncThunk<void, string>(
-  "movies/addFavorite",
-  async (movieId: string, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.token;
-    await axios.post(
-      `http://localhost:3000/movies/${String(movieId)}/favorite`,
-      null,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-  }
-);
-
-//Remove favorite
-export const removeFavorite = createAsyncThunk<void, string>(
-  "movies/removeFavorite",
-  async (movieId: string, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.token;
-    await axios.delete(
-      `http://localhost:3000/movies/${String(movieId)}/favorite`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-  }
-);
-
-//Fetch favorites from the backend
-export const fetchFavorites = createAsyncThunk(
-  "movies/fetchFavorites",
-  async (_, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.token;
-    const response = await axios.get("http://localhost:3000/movies/favorites", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  }
-);
-
-export const sortMovies = (movies: Movie[], sortOption: string) => {
-  return [...movies].sort((a, b) => {
-    if (sortOption === "title") return a.title.localeCompare(b.title);
-    if (sortOption === "release_date")
-      return (
-        (new Date(a.release_date || "").getTime() || 0) -
-        (new Date(b.release_date || "").getTime() || 0)
-      );
-    if (sortOption === "rating") return (a.rating || 0) - (b.rating || 0);
-    return 0;
-  });
 };
 
 const movieSlice = createSlice({
@@ -163,6 +106,7 @@ const movieSlice = createSlice({
 export const { setSortOption, setSearchTerm, setPage, openModal, closeModal } =
   movieSlice.actions;
 
+//Selectors
 export const selectFilteredSortedMovies = (state: RootState) => {
   const { movies, searchTerm, sortOption, currentPage, moviesPerPage } =
     state.movies;
