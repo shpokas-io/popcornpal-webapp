@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
-import logo from "../assets/images/logo-nobc.png";
+import logo from "../../assets/images/logo-nobc.png";
 
 const welcomeMessages = [
   "Welcome back, Time to dive into someone else’s drama for a change.",

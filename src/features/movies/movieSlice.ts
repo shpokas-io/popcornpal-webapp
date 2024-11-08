@@ -88,25 +88,38 @@ export const { setSortOption, setSearchTerm, setPage, openModal, closeModal } =
 
 export const selectMoviesState = (state: RootState) => state.movies;
 
-export const selectFilteredSortedMovies = createSelector(
-  selectMoviesState,
-  ({ movies, searchTerm, sortOption, currentPage, moviesPerPage }) => {
+// Memoized selector for filtering movies
+export const selectFilteredMovies = createSelector(
+  [selectMoviesState],
+  ({ movies, searchTerm }) => {
     const filteredMovies = movies.filter((movie) =>
       movie.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const sortedMovies = sortMovies(filteredMovies, sortOption);
+    return filteredMovies;
+  }
+);
+
+// Memoized selector for sorting the filtered movies
+export const selectSortedFilteredMovies = createSelector(
+  [selectFilteredMovies, selectMoviesState],
+  (filteredMovies, { sortOption }) => {
+    return sortMovies(filteredMovies, sortOption);
+  }
+);
+
+// Memoized selector for paginated and sorted movies
+export const selectFilteredSortedMovies = createSelector(
+  [selectSortedFilteredMovies, selectMoviesState],
+  (sortedMovies, { currentPage, moviesPerPage }) => {
     const startIndex = (currentPage - 1) * moviesPerPage;
     return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
   }
 );
 
+// Selector for the total count of filtered movies
 export const selectFilteredMoviesCount = createSelector(
-  selectMoviesState,
-  ({ movies, searchTerm }) => {
-    return movies.filter((movie) =>
-      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-    ).length;
-  }
+  [selectFilteredMovies],
+  (filteredMovies) => filteredMovies.length
 );
 
 export const selectTopRatedMovies = createSelector(

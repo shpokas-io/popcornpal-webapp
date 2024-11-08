@@ -13,12 +13,9 @@ import MoviesPagination from "../components/movies/MoviesPagination";
 
 const MoviesPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { loading, error } = useSelector((state: RootState) => ({
-    loading: state.movies.loading,
-    error: state.movies.error,
-  }));
-
-  const { isOpen, movie: selectedMovie } = useSelector(selectModalState);
+  const loading = useSelector((state: RootState) => state.movies.loading);
+  const error = useSelector((state: RootState) => state.movies.error);
+  const { isOpen, movie } = useSelector(selectModalState);
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -32,7 +29,7 @@ const MoviesPage: React.FC = () => {
       {error && <Typography color="error">{error}</Typography>}
       <MovieGrid />
       <MoviesPagination />
-      <MovieModal isOpen={isOpen} movie={selectedMovie} />
+      <MovieModal isOpen={isOpen} movie={movie} />
     </Container>
   );
 };

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Typography,
   TextField,
@@ -9,19 +8,19 @@ import {
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { loginUser } from "../features/auth/authThunks";
 import { useNavigate } from "react-router-dom";
+import useLoginForm from "../features/auth/useLoginForm";
+import { useEffect } from "react";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loading, error, token } = useAppSelector((state) => state.auth);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(loginUser({ email, password }));
-  };
+  const { email, setEmail, password, setPassword, handleSubmit } = useLoginForm(
+    () => {
+      dispatch(loginUser({ email, password }));
+    }
+  );
 
   useEffect(() => {
     if (token) {
