@@ -7,41 +7,52 @@ import {
   fetchFavoritesApi,
 } from "./movieService";
 
-const getToken = (state: RootState): string => {
+const retrieveToken = (state: RootState): string => {
   const token = state.auth.token;
-  if (!token) {
-    throw new Error("Authentication token is missing");
-  }
+  if (!token) throw new Error("Authentication token is missing");
   return token;
 };
 
 export const fetchMovies = createAsyncThunk("movies/fetchMovies", async () => {
-  return await fetchMoviesApi();
+  try {
+    return await fetchMoviesApi();
+  } catch {
+    throw new Error("Failed to fetch movies");
+  }
 });
 
 export const addFavorite = createAsyncThunk<void, string>(
   "movies/addFavorite",
   async (movieId, { getState }) => {
-    const state = getState() as RootState;
-    const token = getToken(state);
-    await addFavoriteApi(movieId, token);
+    const token = retrieveToken(getState() as RootState);
+    try {
+      await addFavoriteApi(movieId, token);
+    } catch {
+      throw new Error("Failed to add favorite");
+    }
   }
 );
 
 export const removeFavorite = createAsyncThunk<void, string>(
   "movies/removeFavorite",
   async (movieId, { getState }) => {
-    const state = getState() as RootState;
-    const token = getToken(state);
-    await removeFavoriteApi(movieId, token);
+    const token = retrieveToken(getState() as RootState);
+    try {
+      await removeFavoriteApi(movieId, token);
+    } catch {
+      throw new Error("Failed to remove favorite");
+    }
   }
 );
 
 export const fetchFavorites = createAsyncThunk(
   "movies/fetchFavorites",
   async (_, { getState }) => {
-    const state = getState() as RootState;
-    const token = getToken(state);
-    return await fetchFavoritesApi(token);
+    const token = retrieveToken(getState() as RootState);
+    try {
+      return await fetchFavoritesApi(token);
+    } catch {
+      throw new Error("Failed to fetch favorites");
+    }
   }
 );
