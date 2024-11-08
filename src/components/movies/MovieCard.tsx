@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,6 +6,8 @@ import {
   Typography,
   Box,
   Button,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
@@ -20,6 +22,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [openSnackBar, setOpenSnackbar] = useState(false);
 
   const handleFavoriteToggle = async (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -28,6 +31,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
         await dispatch(removeFavorite(String(movie.id)));
       } else {
         await dispatch(addFavorite(String(movie.id)));
+        setOpenSnackbar(true);
       }
     } catch (error) {
       console.error(
@@ -37,50 +41,71 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
     }
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
-    <Card
-      sx={{
-        transition: "transform 0.3s, box-shadow 0.3s",
-        "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
-      }}
-      onClick={() => dispatch(openModal({ ...movie, id: String(movie.id) }))}
-    >
-      <CardMedia
-        component="img"
-        height="300"
-        image={movie.poster_url || "https://via.placeholder.com/300x450"}
-        alt={movie.title}
-      />
-      <CardContent sx={{ height: 100, overflow: "hidden" }}>
-        <Typography variant="h6" noWrap>
-          {movie.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" noWrap>
-          {movie.description}
-        </Typography>
-      </CardContent>
-      <Box textAlign="center" mb={2}>
-        <Button
-          variant="contained"
-          color={isFavorite ? "secondary" : "primary"}
-          size="small"
-          onClick={handleFavoriteToggle}
+    <>
+      <Card
+        sx={{
+          transition: "transform 0.3s, box-shadow 0.3s",
+          "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
+        }}
+        onClick={() => dispatch(openModal({ ...movie, id: String(movie.id) }))}
+      >
+        <CardMedia
+          component="img"
+          height="300"
+          image={movie.poster_url || "https://via.placeholder.com/300x450"}
+          alt={movie.title}
+        />
+        <CardContent sx={{ height: 100, overflow: "hidden" }}>
+          <Typography variant="h6" noWrap>
+            {movie.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" noWrap>
+            {movie.description}
+          </Typography>
+        </CardContent>
+        <Box textAlign="center" mb={2}>
+          <Button
+            variant="contained"
+            color={isFavorite ? "secondary" : "primary"}
+            size="small"
+            onClick={handleFavoriteToggle}
+          >
+            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() =>
+              dispatch(openModal({ ...movie, id: String(movie.id) }))
+            }
+            sx={{ ml: 1 }}
+          >
+            View Details
+          </Button>
+        </Box>
+      </Card>
+
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
         >
-          {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() =>
-            dispatch(openModal({ ...movie, id: String(movie.id) }))
-          }
-          sx={{ ml: 1 }}
-        >
-          View Details
-        </Button>
-      </Box>
-    </Card>
+          Movie added to favorites!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
