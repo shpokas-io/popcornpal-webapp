@@ -37,6 +37,29 @@ const MainPage: React.FC = () => {
     autoplaySpeed: 3000,
     prevArrow: <CustomArrow direction="left" />,
     nextArrow: <CustomArrow direction="right" />,
+    appendDots: (dots: React.ReactNode) => (
+      <Box
+        component="ul"
+        sx={{
+          m: 0,
+          p: 0,
+          display: "flex",
+          justifyContent: "center",
+          color: "#e0e0e0",
+          "& li.slick-active button::before": {
+            color: "#ffffff",
+            opacity: 1,
+          },
+          "& button::before": {
+            fontSize: "12px",
+            color: "#e0e0e0",
+            opacity: 0.75,
+          },
+        }}
+      >
+        {dots}
+      </Box>
+    ),
   };
 
   return (
@@ -58,15 +81,36 @@ const MainPage: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Centered Carousel for Top Rated Movies */}
       <Box mt={4} width="100%" display="flex" justifyContent="center">
-        <Box width="80%" maxWidth="600px">
+        <Box width="90%" maxWidth="800px">
+          {" "}
           <Typography variant="h5" align="center" gutterBottom>
             Top Rated Movies
           </Typography>
           <Slider {...settings}>
             {topRatedMovies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <Box
+                key={movie.id}
+                sx={{
+                  height: 600,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    height: "100%",
+                    width: "auto",
+                    maxWidth: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MovieCard movie={movie} />
+                </Box>
+              </Box>
             ))}
           </Slider>
         </Box>
@@ -75,7 +119,6 @@ const MainPage: React.FC = () => {
   );
 };
 
-// Custom arrow component for carousel navigation
 const CustomArrow = ({
   direction,
   onClick,
