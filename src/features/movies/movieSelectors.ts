@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { RootState } from "../../app/store";
-import { sortMovies, SortOption } from "./movieUtils"; // Import SortOption type
+import { sortMovies, SortOption } from "./movieUtils";
 
 export const selectMoviesState = (state: RootState) => state.movies;
 
@@ -15,7 +15,7 @@ export const selectFilteredMovies = createSelector(
 export const selectSortedFilteredMovies = createSelector(
   [selectFilteredMovies, selectMoviesState],
   (filteredMovies, { sortOption }) =>
-    sortMovies(filteredMovies, sortOption as SortOption) // Type cast to SortOption
+    sortMovies(filteredMovies, sortOption as SortOption)
 );
 
 export const selectFilteredSortedMovies = createSelector(
