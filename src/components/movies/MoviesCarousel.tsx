@@ -46,11 +46,35 @@ const MoviesCarousel: React.FC = () => {
     autoplaySpeed: 3000,
     prevArrow: <CustomArrow direction="left" />,
     nextArrow: <CustomArrow direction="right" />,
+    appendDots: (dots: React.ReactNode) => (
+      <Box
+        component="ul"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          color: "#ffffff",
+          "& li": {
+            margin: "0 5px",
+          },
+          "& button::before": {
+            fontSize: "50px",
+            color: "#ffffff",
+            opacity: 0.85,
+          },
+          "& li.slick-active button::before": {
+            color: "#ffffff",
+            opacity: 1,
+          },
+        }}
+      >
+        {dots}
+      </Box>
+    ),
   };
 
   return (
     <Box mt={4} width="100%" display="flex" justifyContent="center">
-      <Box width="90%" maxWidth="800px">
+      <Box width="90%" maxWidth="700px" padding="16px">
         <Typography variant="h5" align="center" gutterBottom>
           Top Rated Movies
         </Typography>
@@ -59,7 +83,7 @@ const MoviesCarousel: React.FC = () => {
             <Box
               key={movie.id}
               sx={{
-                height: 400,
+                height: 450,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -67,15 +91,24 @@ const MoviesCarousel: React.FC = () => {
             >
               <Box
                 sx={{
-                  height: "100%",
-                  width: "auto",
+                  width: "100%",
                   maxWidth: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  padding: "8px",
+                  boxShadow: 3,
+                  borderRadius: 2,
                 }}
               >
-                <MovieCard movie={movie} />
+                <MovieCard
+                  movie={movie}
+                  showButtons={false}
+                  sx={{
+                    height: "100%",
+                    maxWidth: "100%",
+                    "& img": {
+                      objectFit: "cover",
+                    },
+                  }}
+                />
               </Box>
             </Box>
           ))}

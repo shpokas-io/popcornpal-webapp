@@ -8,6 +8,8 @@ import {
   Button,
   Snackbar,
   Alert,
+  SxProps,
+  Theme,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
@@ -18,9 +20,15 @@ import { Movie } from "../../features/movies/movieTypes";
 interface MovieCardProps {
   movie: Movie;
   isFavorite?: boolean;
+  showButtons?: boolean;
+  sx?: SxProps<Theme>;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
+const MovieCard: React.FC<MovieCardProps> = ({
+  movie,
+  isFavorite = false,
+  showButtons = true,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [openSnackBar, setOpenSnackbar] = useState(false);
 
@@ -68,27 +76,32 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isFavorite = false }) => {
             {movie.description}
           </Typography>
         </CardContent>
-        <Box textAlign="center" mb={2}>
-          <Button
-            variant="contained"
-            color={isFavorite ? "secondary" : "primary"}
-            size="small"
-            onClick={handleFavoriteToggle}
-          >
-            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            onClick={() =>
-              dispatch(openModal({ ...movie, id: String(movie.id) }))
-            }
-            sx={{ ml: 1 }}
-          >
-            View Details
-          </Button>
-        </Box>
+
+        {/* Conditionally render buttons only if showButtons is true */}
+        {showButtons && (
+          <Box textAlign="center" mb={2}>
+            <Button
+              variant="contained"
+              color={isFavorite ? "secondary" : "primary"}
+              size="small"
+              onClick={handleFavoriteToggle}
+            >
+              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={(event) => {
+                event.stopPropagation();
+                dispatch(openModal({ ...movie, id: String(movie.id) }));
+              }}
+              sx={{ ml: 1 }}
+            >
+              View Details
+            </Button>
+          </Box>
+        )}
       </Card>
 
       <Snackbar
