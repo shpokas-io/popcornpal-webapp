@@ -8,6 +8,8 @@ import {
   Button,
   Snackbar,
   Alert,
+  SxProps,
+  Theme,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
@@ -20,6 +22,7 @@ interface MovieCardProps {
   isFavorite?: boolean;
   showButtons?: boolean;
   disableSnackbar?: boolean;
+  sx?: SxProps<Theme>;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
