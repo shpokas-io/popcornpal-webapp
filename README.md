@@ -42,7 +42,7 @@
 
 ## About The Project
 
-This project is my take on the test task for [ababa.tech](https://ababa.tech/apie-mus/karjera/testine-uzduotis/).
+This project is my take on the test task for ["Ababa.tech"](https://ababa.tech/apie-mus/karjera/testine-uzduotis/).
 Given the focus on speed, my goal was to build a fully functional application from Monday to Friday,<br> prioritizing clean code and packing in as many features as possible within that timeframe.
 To test website use Email: testuser@example.com , Password: testpassword
 
