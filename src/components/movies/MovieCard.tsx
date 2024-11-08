@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -8,8 +8,6 @@ import {
   Button,
   Snackbar,
   Alert,
-  SxProps,
-  Theme,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
@@ -21,27 +19,32 @@ interface MovieCardProps {
   movie: Movie;
   isFavorite?: boolean;
   showButtons?: boolean;
-  sx?: SxProps<Theme>;
+  disableSnackbar?: boolean;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
   movie,
   isFavorite = false,
   showButtons = true,
+  disableSnackbar = false,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [openSnackBar, setOpenSnackbar] = useState(false);
-  const [favoriteState, setFavoriteState] = useState(isFavorite);
+  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+
+  useEffect(() => {
+    setIsFavoriteState(isFavorite);
+  }, [isFavorite]);
 
   const handleFavoriteToggle = (event: React.MouseEvent) => {
     event.stopPropagation();
-    setFavoriteState(!favoriteState);
-    setOpenSnackbar(true);
-    if (favoriteState) {
+    if (isFavoriteState) {
       dispatch(removeFavorite(String(movie.id)));
     } else {
       dispatch(addFavorite(String(movie.id)));
+      if (!disableSnackbar) setOpenSnackbar(true);
     }
+    setIsFavoriteState(!isFavoriteState);
   };
 
   const handleCloseSnackbar = () => {
@@ -76,11 +79,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
           <Box textAlign="center" mb={2}>
             <Button
               variant="contained"
-              color={favoriteState ? "secondary" : "primary"}
+              color={isFavoriteState ? "secondary" : "primary"}
               size="small"
               onClick={handleFavoriteToggle}
             >
-              {favoriteState ? "Remove from Favorites" : "Add to Favorites"}
+              {isFavoriteState ? "Remove from Favorites" : "Add to Favorites"}
             </Button>
             <Button
               variant="outlined"
@@ -98,22 +101,22 @@ const MovieCard: React.FC<MovieCardProps> = ({
         )}
       </Card>
 
-      <Snackbar
-        open={openSnackBar}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
+      {!disableSnackbar && (
+        <Snackbar
+          open={openSnackBar}
+          autoHideDuration={3000}
           onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: "100%" }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          {favoriteState
-            ? "Movie added to favorites!"
-            : "Movie removed from favorites!"}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Movie added to favorites!
+          </Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

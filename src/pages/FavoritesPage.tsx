@@ -36,7 +36,7 @@ const FavoritesPage: React.FC = () => {
       {loading && <Typography>Loading favorites...</Typography>}
       {error && <Typography color="error">{error}</Typography>}
 
-      <MovieGrid movies={paginatedFavorites} isFavorite />
+      <MovieGrid movies={paginatedFavorites} isFavorite disableSnackbar />
 
       <PaginationControls
         totalItems={totalFavorites}
