@@ -107,6 +107,15 @@ export const selectFilteredMoviesCount = createSelector(
   }
 );
 
+export const selectTopRatedMovies = createSelector(
+  (state: RootState) => state.movies.movies,
+  (movies) =>
+    movies
+      .slice()
+      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+      .slice(0, 5)
+);
+
 export const selectModalState = createSelector(
   selectMoviesState,
   ({ isModalOpen, selectedMovie }) => ({
