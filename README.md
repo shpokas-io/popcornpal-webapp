@@ -140,23 +140,3 @@ Skirmantas Spakovskis - [@LinkedIn](https://www.linkedin.com/in/skirmantasspakov
 [Node.js]: https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=nodedotjs&logoColor=white
 [JWT]: https://img.shields.io/badge/JWT-000000.svg?style=for-the-badge&logo=jsonwebtokens&logoColor=white
 [product-screenshot]: public/images/prev.png
-
-##### Backend Setup
-
-1. Clone [backend](https://github.com/shpokas-io/popcornpal-backend) repo:<br>
-   `git clone https://github.com/shpokas-io/popcornpal-backend`
-2. Navigate to backend directory:<br>
-   `cd PopcornPal/backend`
-3. Restore dependencies:<br>
-   `dotnet restore`
-
-4. Create .env file
-
-- PORT=3000
-- DATABASE_URL=<your-mongodb-url>
-- JWT_SECRET=<your-jwt-secret>
-- SUPABASE_URL=<your-supabase-url>
-- SUPABASE_KEY=<your-supabase-key>
-
-4. Build and run the application:<br>
-   `dotnet run`
