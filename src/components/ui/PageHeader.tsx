@@ -1,12 +1,16 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import logo from "../../assets/images/logo-nobc.png";
 
-const MoviesHeader: React.FC = () => (
+interface PageHeaderProps {
+  logoSrc: string;
+  heading: string;
+}
+
+const PageHeader: React.FC<PageHeaderProps> = ({ logoSrc, heading }) => (
   <Box display="flex" flexDirection="column" alignItems="center" mt={4} mb={4}>
     <img
-      src={logo}
-      alt="PopcornPal Logo"
+      src={logoSrc}
+      alt="Page Logo"
       style={{ width: "150px", marginBottom: "20px" }}
     />
     <Typography
@@ -15,10 +19,9 @@ const MoviesHeader: React.FC = () => (
       textAlign="center"
       gutterBottom
     >
-      "Prepare for movie overload! You're about to enter a world where popcorn
-      is a food group and reality is optional."
+      {heading}
     </Typography>
   </Box>
 );
 
-export default MoviesHeader;
+export default PageHeader;
