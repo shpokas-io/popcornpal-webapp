@@ -55,6 +55,11 @@ To test website use Email: testuser@example.com , Password: testpassword
 - Favorites List: Save movies you love to your favorites.
 - Pagination: Easily browse through a large movie collection.
 - Responsive: Optimized for both desktop and mobile use.
+- User Authentication: Secure login system to personalize user experience and allow saving of favorite movies.
+- Top-Rated Carousel: The homepage displays a dynamic carousel of top-rated movies, enabling users to discover popular films at a glance.
+- JWT-Based Security.
+- Efficient Movie Search Across Pages
+- Client-Side State Management: Utilizes Redux for managing complex application states, ensuring smooth, scalable, and reliable data flow across components.
 
 <img src="./src//assets//images/mainpage-sc.png" width="800px" /><br>
 <img src="./src//assets//images/screenshot .png" width="400px" />
