@@ -6,11 +6,11 @@
     Movie Discovery App | Full-stack | Responsive
     <br />
     <br />
-    <a href="https://bookspot-webapp.netlify.app/">View Demo</a>
+    <a href="https://popcornpal-webapp-7gwl.vercel.app/">View Demo</a>
     ·
-    <a href="https://github.com/shpokas-io/bookstop-webapp/issues">Report Bug</a>
+    <a href="https://github.com/shpokas-io/popcornpal-webapp/issues">Report Bug</a>
     ·
-    <a href="https://github.com/shpokas-io/bookstop-webapp/issues">Request Feature</a>
+    <a href="https://github.com/shpokas-io/popcornpal-webapp/issues">Request Feature</a>
   </p>
 </div>
 
@@ -29,11 +29,11 @@
     </li>
     </li>
     <li><a href="#contact">Contact</a></li>
-    <li>
+    <!-- <li>
       <a href="#left-to-do">Left To Do</a>
-    </li>
+    </li> -->
     <li>
-      <a href="#tought-process">Tought Process</a>
+      <a href="#future-development">Future development</a>
     </li>
   </ol>
 </details>
@@ -44,14 +44,16 @@
 
 This project is my take on the test task for [ababa.tech](https://ababa.tech/apie-mus/karjera/testine-uzduotis/).
 Given the focus on speed, my goal was to build a fully functional application from Monday to Friday,<br> prioritizing clean code and packing in as many features as possible within that timeframe.
+To test website use Email: testuser@example.com , Password: testpassword
 
 - Search & Browse: Discover movies with search and filter options.
 - Favorites List: Save movies you love to your favorites.
 - Pagination: Easily browse through a large movie collection.
 - Responsive: Optimized for both desktop and mobile use.
 
-<img src="./public/dekstop.png" width="800px" /><br>
-<img src="./public/figmadesign.png" width="500px" />
+<img src="./src//assets//images/mainpage-sc.png" width="800px" /><br>
+<img src="./src//assets//images/screenshot .png" width="400px" />
+<img src="./src//assets//images/screenshot favs.png" width="400px" />
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -78,42 +80,35 @@ Given the focus on speed, my goal was to build a fully functional application fr
 
 ### Installation
 
-##### Backend Setup
-
-- Clone this repo:<br>
-  `git clone https://github.com/shpokas-io/bookstop-webapp`
-- Navigate to backend directory:<br>
-  `cd bookstopAPI`
-- Restore dependencys:<br>
-  `dotnet restore`
-- Build and run the application:<br>
-  `dotnet run`
-
-### Frontend setup
-
-#### Prerequisites
-
-- Node.js (version 14 or higher)
-- npm (comes with Node.js) or yarn
-
-#### Steps
+#### Frontend setup
 
 1. Clone the frontend repository:<br>
-   `git clone https://github.com/yourusername/popcornpal-frontend.git`
+   `git clone https://github.com/shpokas-io/popcornpal-webapp.git`
 2. Navigate to the frontend directory:<br>
    `cd popcornpal-frontend`
 3. Install dependencies:<br>
    `npm install`
-4. Set up environment variables(optional):
+4. Create a .env file in the frontend directory:
 
-- Create a .env file in the root of the frontend directory.
-- Add the backend URL or any other environment variables required by the frontend:
+- VITE_API_URL=http://localhost:3000
 
 5. Run the frontend development server:<br>
    `npm run dev`<br>
    The frontend will run on http://localhost:5173 by default.
 
-#### Tought Process
+6. Or simply use my live [link](https://popcornpal-webapp-7gwl.vercel.app/)
+
+### Future development
+
+#### Known bugs
+
+- Favorite Page: When a movie is removed from favorites, the "Add to Favorite"<br> button briefly appears before the item is fully removed from the list.
+- Search Functionality: The search results only display movies from the currently selected page,<br> making it difficult to find items on other pages unless you return to the first page.
+
+#### Future improvements
+
+- Enhanced Loading Speed: Work on optimizing load times to improve user experience,<br> as the current page load may feel slow.
+- Implement Caching: Introduce caching mechanisms to reduce redundant data fetching<br> and speed up content delivery across pages.
 
 ## Contact
 
@@ -145,3 +140,23 @@ Skirmantas Spakovskis - [@LinkedIn](https://www.linkedin.com/in/skirmantasspakov
 [Node.js]: https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=nodedotjs&logoColor=white
 [JWT]: https://img.shields.io/badge/JWT-000000.svg?style=for-the-badge&logo=jsonwebtokens&logoColor=white
 [product-screenshot]: public/images/prev.png
+
+##### Backend Setup
+
+1. Clone [backend](https://github.com/shpokas-io/popcornpal-backend) repo:<br>
+   `git clone https://github.com/shpokas-io/popcornpal-backend`
+2. Navigate to backend directory:<br>
+   `cd PopcornPal/backend`
+3. Restore dependencies:<br>
+   `dotnet restore`
+
+4. Create .env file
+
+- PORT=3000
+- DATABASE_URL=<your-mongodb-url>
+- JWT_SECRET=<your-jwt-secret>
+- SUPABASE_URL=<your-supabase-url>
+- SUPABASE_KEY=<your-supabase-key>
+
+4. Build and run the application:<br>
+   `dotnet run`
