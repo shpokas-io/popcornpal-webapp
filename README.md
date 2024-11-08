@@ -1,5 +1,10 @@
 <!-- PROJECT LOGO -->
 
+<p align="center">
+  <img src="./src/assets/images/logo-nobc.png" width="200px" />
+</p>
+<br>
+
 <h3 align="center"> PopcornPal </h3>
 
   <p align="center">
