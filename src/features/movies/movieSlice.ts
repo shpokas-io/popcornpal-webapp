@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 import { RootState } from "../../app/store";
 import {
   fetchMovies,
@@ -83,28 +84,35 @@ const movieSlice = createSlice({
 export const { setSortOption, setSearchTerm, setPage, openModal, closeModal } =
   movieSlice.actions;
 
-//Selectors
-export const selectFilteredSortedMovies = (state: RootState) => {
-  const { movies, searchTerm, sortOption, currentPage, moviesPerPage } =
-    state.movies;
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const sortedMovies = sortMovies(filteredMovies, sortOption);
-  const startIndex = (currentPage - 1) * moviesPerPage;
-  return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
-};
+export const selectMoviesState = (state: RootState) => state.movies;
 
-export const selectFilteredMoviesCount = (state: RootState) => {
-  const { movies, searchTerm } = state.movies;
-  return movies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-  ).length;
-};
+export const selectFilteredSortedMovies = createSelector(
+  selectMoviesState,
+  ({ movies, searchTerm, sortOption, currentPage, moviesPerPage }) => {
+    const filteredMovies = movies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const sortedMovies = sortMovies(filteredMovies, sortOption);
+    const startIndex = (currentPage - 1) * moviesPerPage;
+    return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
+  }
+);
 
-export const selectModalState = (state: RootState) => ({
-  isOpen: state.movies.isModalOpen,
-  movie: state.movies.selectedMovie,
-});
+export const selectFilteredMoviesCount = createSelector(
+  selectMoviesState,
+  ({ movies, searchTerm }) => {
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ).length;
+  }
+);
+
+export const selectModalState = createSelector(
+  selectMoviesState,
+  ({ isModalOpen, selectedMovie }) => ({
+    isOpen: isModalOpen,
+    movie: selectedMovie,
+  })
+);
 
 export default movieSlice.reducer;

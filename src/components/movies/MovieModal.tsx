@@ -50,7 +50,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ isOpen, movie }) => {
               </Typography>
               <Typography
                 variant="subtitle1"
-                color="textSecondary"q
+                color="textSecondary"
                 gutterBottom
               >
                 Rating: {movie.rating}
