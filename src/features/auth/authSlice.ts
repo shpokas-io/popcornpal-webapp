@@ -5,6 +5,7 @@ import {
   getTokenFromLocalStorage,
   removeTokenFromLocalStorage,
 } from "./authUtils";
+import { setTokenToLocalStorage } from "./authUtils";
 
 const initialState: AuthState = {
   token: getTokenFromLocalStorage(),
@@ -38,6 +39,7 @@ const authSlice = createSlice({
           state.token = action.payload.token;
           state.userName = action.payload.userName;
           state.preferredGenre = action.payload.preferredGenre;
+          setTokenToLocalStorage(action.payload.token);
         }
       )
       .addCase(loginUser.rejected, (state, action) => {
