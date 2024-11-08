@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -8,6 +8,8 @@ import MovieCard from "./MovieCard";
 import { Movie } from "../../features/movies/movieTypes";
 import { selectTopRatedMovies } from "../../features/movies/movieSelectors";
 import { useSelector } from "react-redux";
+import { fetchMovies } from "../../features/movies/movieThunks";
+import { useAppDispatch } from "../../hooks/hooks";
 
 const CustomArrow = ({
   direction,
@@ -34,7 +36,15 @@ const CustomArrow = ({
 );
 
 const MoviesCarousel: React.FC = () => {
+  const dispatch = useAppDispatch();
   const topRatedMovies = useSelector(selectTopRatedMovies);
+
+  // Fetch top-rated movies if they aren't already in state
+  useEffect(() => {
+    if (topRatedMovies.length === 0) {
+      dispatch(fetchMovies());
+    }
+  }, [topRatedMovies.length, dispatch]);
 
   const settings = {
     dots: true,

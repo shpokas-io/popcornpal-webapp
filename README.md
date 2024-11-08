@@ -42,7 +42,8 @@
 
 ## About The Project
 
-PopcornPal is a playful, full-stack web application that lets users discover, search, and save their favorite movies.<br> The app features user authentication, a favorites list, movie pagination, and JWT-based security. With a funky and fun UI, PopcornPal ensures a delightful user experience across both mobile and desktop.
+This project is my take on the test task for [ababa.tech](https://ababa.tech/apie-mus/karjera/testine-uzduotis/).
+Given the focus on speed, my goal was to build a fully functional application from Monday to Friday,<br> prioritizing clean code and packing in as many features as possible within that timeframe.
 
 - Search & Browse: Discover movies with search and filter options.
 - Favorites List: Save movies you love to your favorites.
@@ -107,7 +108,6 @@ PopcornPal is a playful, full-stack web application that lets users discover, se
 
 - Create a .env file in the root of the frontend directory.
 - Add the backend URL or any other environment variables required by the frontend:
-  VITE_APP_API_URL=http://localhost:3000
 
 5. Run the frontend development server:<br>
    `npm run dev`<br>
