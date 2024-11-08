@@ -8,8 +8,8 @@ import {
   selectModalState,
   selectFilteredSortedMovies,
   selectFilteredMoviesCount,
-  setPage,
-} from "../features/movies/movieSlice";
+} from "../features/movies/movieSelectors"; // Corrected import
+import { setPage } from "../features/movies/movieSlice";
 import MovieModal from "../components/movies/MovieModal";
 import SearchAndSortControls from "../components/movies/SearchAndSortControls";
 import MovieGrid from "../components/movies/MovieGrid";

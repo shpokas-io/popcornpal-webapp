@@ -1,14 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
-import { RootState } from "../../app/store";
-import {
-  fetchMovies,
-  addFavorite,
-  removeFavorite,
-  fetchFavorites,
-} from "../movies/movieThunks";
-import { sortMovies } from "./movieUtils";
 import { Movie, MovieState } from "./movieTypes";
+import {
+  addFavorite,
+  fetchFavorites,
+  fetchMovies,
+  removeFavorite,
+} from "./movieThunks";
 
 const initialState: MovieState = {
   movies: [],
@@ -58,7 +55,7 @@ const movieSlice = createSlice({
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.loading = false;
         state.totalMovies = action.payload.length;
-        state.movies = sortMovies(action.payload, state.sortOption);
+        state.movies = action.payload;
       })
       .addCase(addFavorite.fulfilled, (state, action) => {
         const movie = state.movies.find(
@@ -85,55 +82,4 @@ const movieSlice = createSlice({
 
 export const { setSortOption, setSearchTerm, setPage, openModal, closeModal } =
   movieSlice.actions;
-
-export const selectMoviesState = (state: RootState) => state.movies;
-
-// Memoized selector for filtering movies
-export const selectFilteredMovies = createSelector(
-  [selectMoviesState],
-  ({ movies, searchTerm }) => {
-    const filteredMovies = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    return filteredMovies;
-  }
-);
-
-// Memoized selector for sorting the filtered movies
-export const selectSortedFilteredMovies = createSelector(
-  [selectFilteredMovies, selectMoviesState],
-  (filteredMovies, { sortOption }) => {
-    return sortMovies(filteredMovies, sortOption);
-  }
-);
-
-// Memoized selector for paginated and sorted movies
-export const selectFilteredSortedMovies = createSelector(
-  [selectSortedFilteredMovies, selectMoviesState],
-  (sortedMovies, { currentPage, moviesPerPage }) => {
-    const startIndex = (currentPage - 1) * moviesPerPage;
-    return sortedMovies.slice(startIndex, startIndex + moviesPerPage);
-  }
-);
-
-// Selector for the total count of filtered movies
-export const selectFilteredMoviesCount = createSelector(
-  [selectFilteredMovies],
-  (filteredMovies) => filteredMovies.length
-);
-
-export const selectTopRatedMovies = createSelector(
-  (state: RootState) => state.movies.movies,
-  (movies) =>
-    movies
-      .slice()
-      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-      .slice(0, 5)
-);
-
-export const selectModalState = createSelector(
-  selectMoviesState,
-  ({ modal }) => modal
-);
-
 export default movieSlice.reducer;

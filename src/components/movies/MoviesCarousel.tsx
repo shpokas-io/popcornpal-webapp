@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import MovieCard from "./MovieCard";
 import { Movie } from "../../features/movies/movieTypes";
-import { selectTopRatedMovies } from "../../features/movies/movieSlice";
+import { selectTopRatedMovies } from "../../features/movies/movieSelectors";
 import { useSelector } from "react-redux";
 
 const CustomArrow = ({
