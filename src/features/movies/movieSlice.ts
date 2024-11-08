@@ -17,8 +17,10 @@ const initialState: MovieState = {
   error: null,
   sortOption: "title",
   searchTerm: "",
-  selectedMovie: null,
-  isModalOpen: false,
+  modal: {
+    isOpen: false,
+    movie: null,
+  },
   currentPage: 1,
   moviesPerPage: 8,
   totalMovies: 0,
@@ -38,12 +40,12 @@ const movieSlice = createSlice({
       state.currentPage = action.payload;
     },
     openModal: (state, action: PayloadAction<Movie>) => {
-      state.selectedMovie = action.payload;
-      state.isModalOpen = true;
+      state.modal.movie = action.payload;
+      state.modal.isOpen = true;
     },
     closeModal: (state) => {
-      state.selectedMovie = null;
-      state.isModalOpen = false;
+      state.modal.movie = null;
+      state.modal.isOpen = false;
     },
   },
 
@@ -118,10 +120,7 @@ export const selectTopRatedMovies = createSelector(
 
 export const selectModalState = createSelector(
   selectMoviesState,
-  ({ isModalOpen, selectedMovie }) => ({
-    isOpen: isModalOpen,
-    movie: selectedMovie,
-  })
+  ({ modal }) => modal
 );
 
 export default movieSlice.reducer;

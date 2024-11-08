@@ -1,28 +1,23 @@
 import React, { useEffect } from "react";
-import { Container, Grid, Typography, Box, Pagination } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import {
-  setPage,
-  selectFilteredSortedMovies,
-  selectFilteredMoviesCount,
-  selectModalState,
-} from "../features/movies/movieSlice";
 import { useAppDispatch } from "../hooks/hooks";
-import MovieCard from "../components/movies/MovieCard";
-import MovieModal from "../components/movies/MovieModal";
+import { RootState } from "../app/store";
 import { fetchMovies } from "../features/movies/movieThunks";
+import { selectModalState } from "../features/movies/movieSlice";
+import MovieModal from "../components/movies/MovieModal";
 import SearchAndSortControls from "../components/movies/SearchAndSortControls";
-import logo from "../assets/images/logo-nobc.png";
+import MovieGrid from "../components/movies/MovieGrid";
+import MoviesHeader from "../components/movies/MoviesHeader";
+import MoviesPagination from "../components/movies/MoviesPagination";
 
 const MoviesPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { loading, error } = useSelector((state: RootState) => ({
+    loading: state.movies.loading,
+    error: state.movies.error,
+  }));
 
-  const { loading, error, currentPage, moviesPerPage } = useSelector(
-    (state: RootState) => state.movies
-  );
-  const movies = useSelector(selectFilteredSortedMovies);
-  const totalFilteredMovies = useSelector(selectFilteredMoviesCount);
   const { isOpen, movie: selectedMovie } = useSelector(selectModalState);
 
   useEffect(() => {
@@ -31,51 +26,12 @@ const MoviesPage: React.FC = () => {
 
   return (
     <Container>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        mt={4}
-        mb={4}
-      >
-        <img
-          src={logo}
-          alt="PopcornPal Logo"
-          style={{ width: "150px", marginBottom: "20px" }}
-        />
-        <Typography
-          variant="h6"
-          color="textSecondary"
-          textAlign="center"
-          gutterBottom
-        >
-          "Prepare for movie overload! You're about to enter a world where
-          popcorn is a food group and reality is optional."
-        </Typography>
-      </Box>
-
+      <MoviesHeader />
       <SearchAndSortControls />
-
       {loading && <Typography>Loading movies...</Typography>}
       {error && <Typography color="error">{error}</Typography>}
-
-      <Grid container spacing={4}>
-        {movies.map((movie) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
-            <MovieCard movie={movie} />
-          </Grid>
-        ))}
-      </Grid>
-
-      <Box display="flex" justifyContent="center" mt={4}>
-        <Pagination
-          count={Math.ceil(totalFilteredMovies / moviesPerPage)}
-          page={currentPage}
-          onChange={(_, value) => dispatch(setPage(value))}
-          color="primary"
-        />
-      </Box>
-
+      <MovieGrid />
+      <MoviesPagination />
       <MovieModal isOpen={isOpen} movie={selectedMovie} />
     </Container>
   );

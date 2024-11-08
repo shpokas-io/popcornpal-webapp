@@ -15,8 +15,10 @@ export interface MovieState {
   error: string | null;
   sortOption: string;
   searchTerm: string;
-  selectedMovie: Movie | null;
-  isModalOpen: boolean;
+  modal: {
+    isOpen: boolean;
+    movie: Movie | null;
+  };
   currentPage: number;
   moviesPerPage: number;
   totalMovies: number;
