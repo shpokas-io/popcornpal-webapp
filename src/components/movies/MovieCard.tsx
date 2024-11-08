@@ -31,21 +31,16 @@ const MovieCard: React.FC<MovieCardProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [openSnackBar, setOpenSnackbar] = useState(false);
+  const [favoriteState, setFavoriteState] = useState(isFavorite);
 
-  const handleFavoriteToggle = async (event: React.MouseEvent) => {
+  const handleFavoriteToggle = (event: React.MouseEvent) => {
     event.stopPropagation();
-    try {
-      if (isFavorite) {
-        await dispatch(removeFavorite(String(movie.id)));
-      } else {
-        await dispatch(addFavorite(String(movie.id)));
-        setOpenSnackbar(true);
-      }
-    } catch (error) {
-      console.error(
-        `Error ${isFavorite ? "removing from" : "adding to"} favorites:`,
-        error
-      );
+    setFavoriteState(!favoriteState);
+    setOpenSnackbar(true);
+    if (favoriteState) {
+      dispatch(removeFavorite(String(movie.id)));
+    } else {
+      dispatch(addFavorite(String(movie.id)));
     }
   };
 
@@ -77,16 +72,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
           </Typography>
         </CardContent>
 
-        {/* Conditionally render buttons only if showButtons is true */}
         {showButtons && (
           <Box textAlign="center" mb={2}>
             <Button
               variant="contained"
-              color={isFavorite ? "secondary" : "primary"}
+              color={favoriteState ? "secondary" : "primary"}
               size="small"
               onClick={handleFavoriteToggle}
             >
-              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              {favoriteState ? "Remove from Favorites" : "Add to Favorites"}
             </Button>
             <Button
               variant="outlined"
@@ -115,7 +109,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
           severity="success"
           sx={{ width: "100%" }}
         >
-          Movie added to favorites!
+          {favoriteState
+            ? "Movie added to favorites!"
+            : "Movie removed from favorites!"}
         </Alert>
       </Snackbar>
     </>

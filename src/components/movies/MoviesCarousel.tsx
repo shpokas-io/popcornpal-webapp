@@ -39,7 +39,6 @@ const MoviesCarousel: React.FC = () => {
   const dispatch = useAppDispatch();
   const topRatedMovies = useSelector(selectTopRatedMovies);
 
-  // Fetch top-rated movies if they aren't already in state
   useEffect(() => {
     if (topRatedMovies.length === 0) {
       dispatch(fetchMovies());
